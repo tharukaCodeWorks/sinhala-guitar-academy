@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import ChordDiagram from '../components/ChordDiagram'
 import { chordLibrary, getChordById } from '../data/chords'
 import type { Chord } from '../data/chords/types'
@@ -11,17 +12,39 @@ import {
 const DEFAULT_PROGRESSION_IDS = ['c-major', 'a-minor', 'f-major', 'g-major']
 
 /**
+ * Reads an initial capo fret from the `?capo=` query param (e.g. a deep
+ * link from a song's detail page pre-filling its `capoFret`), clamped into
+ * the valid range. Falls back to `2` when the param is absent, non-numeric,
+ * or out of range.
+ */
+function initialCapoFretFromParams(searchParams: URLSearchParams): number {
+  const raw = searchParams.get('capo')
+  if (raw == null) return 2
+  const parsed = Number(raw)
+  if (!Number.isInteger(parsed)) return 2
+  return Math.min(MAX_CAPO_FRET, Math.max(MIN_CAPO_FRET, parsed))
+}
+
+/**
  * Capo transposition tool: pick a chord progression (the shapes you already
  * know), pick a capo fret, and see both the shape you physically play
  * (unchanged — a capo never changes what you finger) and the chord that
  * actually sounds once the capo shifts the pitch, side by side, updating
  * live as the fret changes.
+ *
+ * Supports an optional `?capo=<fret>` query param to pre-fill the capo fret
+ * on load (used by the Song Detail page to link straight into a song's
+ * documented capo position) — read once on mount; the slider/± controls own
+ * the value from then on.
  */
 function CapoToolPage() {
+  const [searchParams] = useSearchParams()
   const [progressionIds, setProgressionIds] = useState<string[]>(
     DEFAULT_PROGRESSION_IDS.filter((id) => getChordById(id) != null),
   )
-  const [capoFret, setCapoFret] = useState(2)
+  const [capoFret, setCapoFret] = useState(() =>
+    initialCapoFretFromParams(searchParams),
+  )
   const [addChordId, setAddChordId] = useState('')
 
   const progression = useMemo<Chord[]>(
