@@ -4,16 +4,18 @@ const N = null
 
 /**
  * The 2021 viral cover that became one of the most-streamed Sri Lankan
- * songs internationally. Taught here the way most beginner tutorials teach
- * it: capo on the 4th fret, playing the open Am/Em shapes rather than the
- * barre chords the song's actual key (C# minor) would otherwise require.
+ * songs internationally. Taught here the way most tutorials teach it: capo
+ * on the 4th fret, playing the Am/G/Em open shapes plus one barre chord (F)
+ * rather than the barre chords the song's actual key (C# minor) would
+ * otherwise require throughout. That one unavoidable barre chord is why
+ * this is catalogued as intermediate rather than beginner — see `notes`.
  */
 export const manikeMageHithe: Song = {
   id: 'manike-mage-hithe',
   title: 'Manike Mage Hithe',
   artist: 'Yohani, Satheeshan & Chamath Sangeeth',
   key: 'C#',
-  difficulty: 'beginner',
+  difficulty: 'intermediate',
   capoFret: 4,
   chordProgression: [
     { name: 'Verse', chordIds: ['a-minor', 'f-major', 'g-major', 'e-minor'] },
@@ -45,5 +47,5 @@ export const manikeMageHithe: Song = {
     ],
   },
   notes:
-    'Capo on the 4th fret lets you play the shapes Am-F-G-Em while the song still sounds in C# minor — the version most tutorials teach. F is the only barre chord needed; everything else is open.',
+    'Capo on the 4th fret lets you play the shapes Am-F-G-Em while the song still sounds in C# minor — the version most tutorials teach. F is the only barre chord needed (everything else is open), but that one barre chord is why this is classed intermediate rather than beginner.',
 }

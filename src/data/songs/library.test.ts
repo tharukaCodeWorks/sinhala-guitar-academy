@@ -81,6 +81,31 @@ describe('referential integrity against the chord library', () => {
       expect(resolved.length).toBe(listSongChordIds(song).length)
     }
   })
+
+  it('every beginner song only uses chords with a beginner-difficulty variant', () => {
+    // Regression guard for the class of bug where a song is tagged
+    // difficulty: 'beginner' but its chordProgression references a chord
+    // whose only variant(s) are 'intermediate'/'advanced' (e.g. a
+    // barre-only chord like F major) — catches the mismatch data-entry
+    // error, not just dangling-reference typos.
+    for (const song of songLibrary) {
+      if (song.difficulty !== 'beginner') continue
+      for (const section of song.chordProgression) {
+        for (const chordId of section.chordIds) {
+          const chord = getChordById(chordId)
+          const hasBeginnerVariant = chord?.variants.some(
+            (variant) => variant.difficulty === 'beginner',
+          )
+          expect(
+            hasBeginnerVariant,
+            `${song.id} is difficulty="beginner" but references chord "${chordId}", which has no beginner-difficulty variant (variants: ${chord?.variants
+              .map((v) => `${v.id}=${v.difficulty}`)
+              .join(', ')})`,
+          ).toBe(true)
+        }
+      }
+    }
+  })
 })
 
 describe('referential integrity against the strumming-pattern fixtures', () => {
