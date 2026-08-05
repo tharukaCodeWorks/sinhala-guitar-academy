@@ -8,6 +8,7 @@ import FingeringPracticePage from './pages/FingeringPracticePage'
 import StrummingPracticePage from './pages/StrummingPracticePage'
 import SongsPage from './pages/SongsPage'
 import TabDisplayDemoPage from './pages/TabDisplayDemoPage'
+import StrummingPlayerDemoPage from './pages/StrummingPlayerDemoPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="strumming-practice" element={<StrummingPracticePage />} />
         <Route path="songs" element={<SongsPage />} />
         <Route path="demo/tabs" element={<TabDisplayDemoPage />} />
+        <Route path="demo/strumming" element={<StrummingPlayerDemoPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
