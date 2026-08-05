@@ -80,25 +80,38 @@ function StrummingPlayer({ pattern, className = '' }: StrummingPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [tempoBpm, setTempoBpm] = useState(pattern.tempoBpm)
   const [currentStepIndex, setCurrentStepIndex] = useState<number | null>(null)
+  // Practice loop toggle: when on (the default), the bar auto-repeats for
+  // continuous practice, same as before this control existed. When off,
+  // playback stops itself after one pass through the bar, which is useful
+  // for checking a pattern once without it running away on you.
+  const [loopEnabled, setLoopEnabled] = useState(true)
 
   const audioContextRef = useRef<AudioContext | null>(null)
   const schedulerIntervalIdRef = useRef<number | null>(null)
   const animationFrameIdRef = useRef<number | null>(null)
+  const autoStopTimeoutIdRef = useRef<number | null>(null)
   const nextStepIndexRef = useRef(0)
   const nextStepTimeRef = useRef(0)
   const scheduledStepsRef = useRef<ScheduledStep[]>([])
+  // Set once the scheduler has queued the final step of a non-looping pass,
+  // so it stops looking for more work instead of wrapping back to step 0.
+  const loopStoppedRef = useRef(false)
 
   // Kept in refs so the scheduler/draw loops (which are only (re)started on
-  // play) always read the *current* tempo/pattern without needing to be
-  // torn down and restarted every time those values change.
+  // play) always read the *current* tempo/pattern/loop setting without
+  // needing to be torn down and restarted every time those values change.
   const tempoBpmRef = useRef(tempoBpm)
   const patternRef = useRef(pattern)
+  const loopEnabledRef = useRef(loopEnabled)
   useEffect(() => {
     tempoBpmRef.current = tempoBpm
   }, [tempoBpm])
   useEffect(() => {
     patternRef.current = pattern
   }, [pattern])
+  useEffect(() => {
+    loopEnabledRef.current = loopEnabled
+  }, [loopEnabled])
 
   const stop = useCallback(() => {
     if (schedulerIntervalIdRef.current !== null) {
@@ -108,6 +121,10 @@ function StrummingPlayer({ pattern, className = '' }: StrummingPlayerProps) {
     if (animationFrameIdRef.current !== null) {
       window.cancelAnimationFrame(animationFrameIdRef.current)
       animationFrameIdRef.current = null
+    }
+    if (autoStopTimeoutIdRef.current !== null) {
+      window.clearTimeout(autoStopTimeoutIdRef.current)
+      autoStopTimeoutIdRef.current = null
     }
     scheduledStepsRef.current = []
     setIsPlaying(false)
@@ -143,22 +160,39 @@ function StrummingPlayer({ pattern, className = '' }: StrummingPlayerProps) {
   const scheduler = useCallback(() => {
     const audioContext = audioContextRef.current
     const steps = patternRef.current.steps
-    if (!audioContext || steps.length === 0) return
+    if (!audioContext || steps.length === 0 || loopStoppedRef.current) return
 
     while (
+      !loopStoppedRef.current &&
       nextStepTimeRef.current <
-      audioContext.currentTime + SCHEDULE_AHEAD_SECONDS
+        audioContext.currentTime + SCHEDULE_AHEAD_SECONDS
     ) {
       const index = nextStepIndexRef.current
       const time = nextStepTimeRef.current
+      const isLastStepOfBar = index === steps.length - 1
+      const stepDuration = stepDurationSeconds(tempoBpmRef.current)
 
       scheduleStepSound(audioContext, steps[index], time)
       scheduledStepsRef.current.push({ index, time })
 
-      nextStepTimeRef.current += stepDurationSeconds(tempoBpmRef.current)
+      nextStepTimeRef.current += stepDuration
       nextStepIndexRef.current = (index + 1) % steps.length
+
+      // Practice loop off: once the bar's final step has been scheduled,
+      // stop scheduling further steps and auto-stop playback once that
+      // step finishes sounding, rather than wrapping back to step 0.
+      if (isLastStepOfBar && !loopEnabledRef.current) {
+        loopStoppedRef.current = true
+        const msUntilBarEnds = Math.max(
+          0,
+          (time + stepDuration - audioContext.currentTime) * 1000,
+        )
+        autoStopTimeoutIdRef.current = window.setTimeout(() => {
+          stop()
+        }, msUntilBarEnds)
+      }
     }
-  }, [])
+  }, [stop])
 
   // Visual draw loop: on every animation frame, advances the highlighted
   // step to whichever scheduled step's time has most recently passed
@@ -195,6 +229,7 @@ function StrummingPlayer({ pattern, className = '' }: StrummingPlayerProps) {
     // in the past if this tick is slightly late.
     nextStepTimeRef.current = audioContext.currentTime + 0.05
     scheduledStepsRef.current = []
+    loopStoppedRef.current = false
     setCurrentStepIndex(null)
 
     scheduler()
@@ -292,6 +327,17 @@ function StrummingPlayer({ pattern, className = '' }: StrummingPlayerProps) {
             className="w-16 rounded border border-gray-300 bg-white px-1 py-0.5 text-sm dark:border-gray-700 dark:bg-gray-900"
           />
           BPM
+        </label>
+
+        <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+          <input
+            type="checkbox"
+            checked={loopEnabled}
+            onChange={(event) => setLoopEnabled(event.target.checked)}
+            aria-label="Loop this bar continuously while playing"
+            className="h-4 w-4 rounded accent-amber-500"
+          />
+          Loop bar
         </label>
 
         <span className="text-sm text-gray-500 dark:text-gray-400">
