@@ -29,15 +29,20 @@ npm run format:check
 
 ## Deployment
 
-This project deploys as a static site to **Vercel**, configured via
-[`vercel.json`](./vercel.json):
+Live at [guitar-master.heytharuka.online](https://guitar-master.heytharuka.online).
 
-- `buildCommand`: `npm run build`
-- `outputDirectory`: `dist`
-- A catch-all rewrite (`/(.*) -> /index.html`) so client-side routes (via
-  `react-router-dom`'s `BrowserRouter`) resolve correctly on refresh/direct
-  navigation instead of 404ing.
+Deployment is release-triggered via GitHub Actions
+(`.github/workflows/deploy.yml`). Publishing a new GitHub Release builds the
+app and rsyncs `dist/` to `/var/www/sinhala-guitar-academy/dist/` on the
+server, served by an nginx block dedicated to this site (SPA fallback to
+`index.html` for client-side routing, `/assets/` cached 30d immutable).
 
-To deploy, import this repository into Vercel (or run `vercel --prod` with
-the Vercel CLI) — no additional configuration is required beyond what's in
-`vercel.json`.
+To ship a new version:
+
+```bash
+gh release create v1.2.3 --generate-notes
+```
+
+`vercel.json` is also still present as a static-hosting config in case this
+ever needs to move to Vercel instead — it isn't used by the current deploy
+path.
