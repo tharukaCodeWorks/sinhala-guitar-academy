@@ -6,7 +6,9 @@ const sectionDescriptions: Record<string, string> = {
   '/chord-families': 'Discover chords that sound great together.',
   '/capo-tool': 'Find the right capo position for any song.',
   '/fingering-practice': 'Drill chord shapes and transitions.',
-  '/strumming-practice': 'Learn common Sinhala song strumming patterns.',
+  '/strumming-practice':
+    'Learn common Sinhala and Hindi song strumming patterns.',
+  '/strum-builder': 'Paste a chord sheet and build a strumming pattern for it.',
   '/songs': 'Play along with Sinhala songs, chords and tabs.',
 }
 

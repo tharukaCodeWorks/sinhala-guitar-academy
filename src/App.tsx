@@ -6,6 +6,7 @@ import ChordFamiliesPage from './pages/ChordFamiliesPage'
 import CapoToolPage from './pages/CapoToolPage'
 import FingeringPracticePage from './pages/FingeringPracticePage'
 import StrummingPracticePage from './pages/StrummingPracticePage'
+import StrumBuilderPage from './pages/StrumBuilderPage'
 import SongsPage from './pages/SongsPage'
 import SongDetailPage from './pages/SongDetailPage'
 import TabDisplayDemoPage from './pages/TabDisplayDemoPage'
@@ -22,6 +23,7 @@ function App() {
         <Route path="capo-tool" element={<CapoToolPage />} />
         <Route path="fingering-practice" element={<FingeringPracticePage />} />
         <Route path="strumming-practice" element={<StrummingPracticePage />} />
+        <Route path="strum-builder" element={<StrumBuilderPage />} />
         <Route path="songs" element={<SongsPage />} />
         <Route path="songs/:songId" element={<SongDetailPage />} />
         <Route path="demo/tabs" element={<TabDisplayDemoPage />} />

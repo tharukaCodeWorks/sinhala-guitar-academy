@@ -16,5 +16,6 @@ export const navItems: NavItem[] = [
   { label: 'Capo Tool', path: '/capo-tool' },
   { label: 'Fingering Practice', path: '/fingering-practice' },
   { label: 'Strumming Practice', path: '/strumming-practice' },
+  { label: 'Strum Builder', path: '/strum-builder' },
   { label: 'Songs', path: '/songs' },
 ]
