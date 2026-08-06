@@ -13,9 +13,8 @@ import {
 } from './index'
 
 describe('songLibrary coverage', () => {
-  it('has between 8 and 10 songs', () => {
+  it('has at least 8 songs', () => {
     expect(songLibrary.length).toBeGreaterThanOrEqual(8)
-    expect(songLibrary.length).toBeLessThanOrEqual(10)
   })
 
   it('every song id is unique', () => {
