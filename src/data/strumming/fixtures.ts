@@ -106,10 +106,105 @@ export const balladDownstrokesPattern: StrummingPattern = {
   ],
 }
 
+/**
+ * A slow down-up-mute-up pattern widely taught for acoustic covers of slow
+ * Hindi film ballads — the muted chucks on the off-beats give space for the
+ * vocal line while keeping gentle rhythmic movement under a sustained chord.
+ */
+export const bollywoodBalladPattern: StrummingPattern = {
+  id: 'bollywood-ballad-dux',
+  title: 'Bollywood Ballad (D-U-X-U)',
+  description:
+    'A slow down-up-mute-up pattern common in acoustic covers of romantic Hindi film songs — muted chucks on the off-beats leave room for the vocal melody while keeping gentle rhythmic movement.',
+  tempoBpm: 76,
+  steps: [
+    { type: 'down' }, // 1
+    { type: 'up' }, // &
+    { type: 'mute' }, // 2
+    { type: 'up' }, // &
+    { type: 'down' }, // 3
+    { type: 'up' }, // &
+    { type: 'mute' }, // 4
+    { type: 'up' }, // &
+  ],
+}
+
+/**
+ * A fast, danceable 6/8 pattern (two groups of three eighth notes per bar)
+ * built from the classic down-down-up shuffle that drives traditional
+ * Sri Lankan baila dance rhythm — distinct from the 4/4 calypso-pop groove
+ * above, this is the quicker triplet-feel style heard in up-tempo baila.
+ */
+export const bailaSixEightPattern: StrummingPattern = {
+  id: 'baila-six-eight',
+  title: 'Baila 6/8 Shuffle',
+  description:
+    'A fast 6/8 down-down-up shuffle (two three-count groups per bar) driving the quicker, danceable side of traditional Sri Lankan baila — distinct from the 4/4 calypso-pop groove above.',
+  tempoBpm: 152,
+  steps: [
+    { type: 'down', accent: true }, // 1
+    { type: 'down' }, // 2
+    { type: 'up' }, // 3
+    { type: 'down', accent: true }, // 4
+    { type: 'down' }, // 5
+    { type: 'up' }, // 6
+  ],
+}
+
+/**
+ * A rapid all-upstroke pattern used for high-energy sections of fast Hindi
+ * and Sinhala dance-pop tracks, where quick, light upstrokes create a
+ * driving, percussive texture without the weight of alternating downstrokes.
+ */
+export const dancePopUpstrokesPattern: StrummingPattern = {
+  id: 'dance-pop-upstrokes',
+  title: 'Dance-Pop Upstrokes',
+  description:
+    'Rapid, light all-upstroke strumming used in high-energy sections of fast Hindi and Sinhala dance-pop tracks — a driving, percussive texture distinct from alternating down-up patterns.',
+  tempoBpm: 140,
+  steps: [
+    { type: 'up', accent: true },
+    { type: 'up' },
+    { type: 'up', accent: true },
+    { type: 'up' },
+    { type: 'up', accent: true },
+    { type: 'up' },
+    { type: 'up', accent: true },
+    { type: 'up' },
+  ],
+}
+
+/**
+ * A sparse, mostly-rests verse pattern widely used in the quieter verse
+ * sections of Hindi film songs before a fuller chorus strum takes over —
+ * lets the vocal and lyrics breathe against minimal guitar movement.
+ */
+export const filmiVerseGroovePattern: StrummingPattern = {
+  id: 'filmi-verse-groove',
+  title: 'Filmi Verse Groove',
+  description:
+    'A sparse pattern common in the quieter verse sections of Hindi film songs, saving a fuller strum for the chorus — minimal guitar movement leaves room for the vocal line.',
+  tempoBpm: 92,
+  steps: [
+    { type: 'down' }, // 1
+    { type: 'rest' }, // &
+    { type: 'rest' }, // 2
+    { type: 'up' }, // &
+    { type: 'rest' }, // 3
+    { type: 'up' }, // &
+    { type: 'rest' }, // 4
+    { type: 'rest' }, // &
+  ],
+}
+
 export const strummingPatternFixtures: StrummingPattern[] = [
   popFolkPattern,
   steadyEighthsPattern,
   percussiveMutePattern,
   bailaCalypsoPattern,
   balladDownstrokesPattern,
+  bollywoodBalladPattern,
+  bailaSixEightPattern,
+  dancePopUpstrokesPattern,
+  filmiVerseGroovePattern,
 ]
