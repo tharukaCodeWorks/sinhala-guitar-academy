@@ -7,3 +7,13 @@
 body {
   margin: 0;
 }
+
+/* Hides the scrollbar on an element that still scrolls (e.g. the desktop
+ * nav's horizontal-overflow fallback) — cross-browser, no plugin needed. */
+.scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* old Edge/IE */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/new Edge */
+}
