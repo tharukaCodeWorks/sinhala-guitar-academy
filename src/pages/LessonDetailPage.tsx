@@ -107,10 +107,10 @@ function LessonDetail({ lesson }: LessonDetailProps) {
             </p>
           </div>
           <Link
-            to="/keyboard/songs"
+            to={`/keyboard/songs/${song.id}`}
             className="shrink-0 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500"
           >
-            Find it in Songs
+            Open Song Detail
           </Link>
         </div>
       )}
