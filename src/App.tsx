@@ -11,6 +11,13 @@ import SongsPage from './pages/SongsPage'
 import SongDetailPage from './pages/SongDetailPage'
 import TabDisplayDemoPage from './pages/TabDisplayDemoPage'
 import StrummingPlayerDemoPage from './pages/StrummingPlayerDemoPage'
+import KeyboardHomePage from './pages/KeyboardHomePage'
+import KeyboardLessonsPage from './pages/KeyboardLessonsPage'
+import KeyboardChordLibraryPage from './pages/KeyboardChordLibraryPage'
+import KeyboardChordFamiliesPage from './pages/KeyboardChordFamiliesPage'
+import KeyboardScaleExplorerPage from './pages/KeyboardScaleExplorerPage'
+import KeyboardTechniqueDrillsPage from './pages/KeyboardTechniqueDrillsPage'
+import KeyboardSongsPage from './pages/KeyboardSongsPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 function App() {
@@ -28,6 +35,19 @@ function App() {
         <Route path="songs/:songId" element={<SongDetailPage />} />
         <Route path="demo/tabs" element={<TabDisplayDemoPage />} />
         <Route path="demo/strumming" element={<StrummingPlayerDemoPage />} />
+        <Route path="keyboard" element={<KeyboardHomePage />} />
+        <Route path="keyboard/lessons" element={<KeyboardLessonsPage />} />
+        <Route path="keyboard/chords" element={<KeyboardChordLibraryPage />} />
+        <Route
+          path="keyboard/chord-families"
+          element={<KeyboardChordFamiliesPage />}
+        />
+        <Route path="keyboard/scales" element={<KeyboardScaleExplorerPage />} />
+        <Route
+          path="keyboard/technique"
+          element={<KeyboardTechniqueDrillsPage />}
+        />
+        <Route path="keyboard/songs" element={<KeyboardSongsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
