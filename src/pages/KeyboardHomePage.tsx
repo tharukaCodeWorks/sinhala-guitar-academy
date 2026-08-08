@@ -6,7 +6,8 @@ const sectionDescriptions: Record<string, string> = {
   '/keyboard/chords': 'Look up keyboard chord diagrams and voicings.',
   '/keyboard/chord-families':
     'Discover chords that sound great together on keyboard.',
-  '/keyboard/scales': 'Explore scales and how they map onto the keys.',
+  '/keyboard/scales':
+    'See scale notes and right/left-hand fingering on the keyboard.',
   '/keyboard/technique':
     'Drill technique exercises to build finger independence.',
   '/keyboard/songs': 'Play along with Sinhala songs arranged for keyboard.',
