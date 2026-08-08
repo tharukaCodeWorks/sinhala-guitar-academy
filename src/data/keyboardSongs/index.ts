@@ -87,3 +87,13 @@ export function getSongChords(song: Song): KeyboardChord[] {
     .map((chordId) => getChordById(chordId))
     .filter((chord): chord is KeyboardChord => chord !== undefined)
 }
+
+/**
+ * All songs whose chord progression references a given chord id (see
+ * `listSongChordIds`), in library order. Powers "heard in" callouts — e.g.
+ * the Keyboard Chord Families page pointing from a family chord to real
+ * songs that use it.
+ */
+export function findSongsByChordId(chordId: string): Song[] {
+  return songLibrary.filter((song) => listSongChordIds(song).includes(chordId))
+}
