@@ -130,6 +130,13 @@ describe('scaleLibrary — known fingering exceptions', () => {
         if (scale.rightHandFingering[index] === 1) {
           expect(note).not.toMatch(/#/)
         }
+        // Regression guard: an earlier seeding had G# natural minor's left
+        // hand crossing the thumb under on F# (a black key) — this class of
+        // bug only shows up when the left hand is checked too, since the
+        // right-hand-only version of this assertion still passes.
+        if (scale.leftHandFingering[index] === 1) {
+          expect(note).not.toMatch(/#/)
+        }
       })
     }
   })
@@ -144,7 +151,105 @@ describe('scaleLibrary — known fingering exceptions', () => {
         if (scale.rightHandFingering[index] === 1) {
           expect(note).not.toMatch(/#/)
         }
+        if (scale.leftHandFingering[index] === 1) {
+          expect(note).not.toMatch(/#/)
+        }
       })
     }
   })
+})
+
+describe('scaleLibrary — black-tonic scale fingering, exact match', () => {
+  /**
+   * The generic "8 entries, 1-5" shape check plus the shared-pattern and
+   * thumb-placement invariant checks above all still pass for *wrong but
+   * plausible* finger numbers — that's exactly the class of bug review
+   * caught twice in this data (both `MAJOR_FINGERING` and, less severely,
+   * `NATURAL_MINOR_FINGERING`). Pin every black-tonic scale's fingering
+   * down exactly, independently of `library.ts`'s own literals, so a
+   * regression here fails loudly instead of slipping through as "still
+   * shape-valid".
+   */
+  const EXPECTED_MAJOR_FINGERING: Record<
+    'C#' | 'D#' | 'F#' | 'G#' | 'A#',
+    { rightHand: number[]; leftHand: number[] }
+  > = {
+    'C#': {
+      rightHand: [2, 3, 1, 2, 3, 4, 1, 2],
+      leftHand: [3, 2, 1, 4, 3, 2, 1, 3],
+    },
+    'D#': {
+      rightHand: [3, 1, 2, 3, 4, 1, 2, 3],
+      leftHand: [3, 2, 1, 4, 3, 2, 1, 3],
+    },
+    'F#': {
+      rightHand: [2, 3, 4, 1, 2, 3, 1, 2],
+      leftHand: [4, 3, 2, 1, 3, 2, 1, 4],
+    },
+    'G#': {
+      rightHand: [3, 4, 1, 2, 3, 1, 2, 3],
+      leftHand: [3, 2, 1, 4, 3, 2, 1, 3],
+    },
+    'A#': {
+      rightHand: [2, 1, 2, 3, 1, 2, 3, 4],
+      leftHand: [3, 2, 1, 4, 3, 2, 1, 3],
+    },
+  }
+
+  const EXPECTED_NATURAL_MINOR_FINGERING: Record<
+    'C#' | 'D#' | 'F#' | 'G#' | 'A#',
+    { rightHand: number[]; leftHand: number[] }
+  > = {
+    'C#': {
+      rightHand: [3, 4, 1, 2, 3, 1, 2, 3],
+      leftHand: [3, 2, 1, 4, 3, 2, 1, 3],
+    },
+    'D#': {
+      rightHand: [3, 1, 2, 3, 4, 1, 2, 3],
+      leftHand: [2, 1, 4, 3, 2, 1, 3, 2],
+    },
+    'F#': {
+      rightHand: [2, 3, 1, 2, 3, 1, 2, 3],
+      leftHand: [4, 3, 2, 1, 3, 2, 1, 4],
+    },
+    'G#': {
+      rightHand: [3, 4, 1, 2, 3, 1, 2, 3],
+      leftHand: [3, 2, 1, 3, 2, 1, 4, 3],
+    },
+    'A#': {
+      rightHand: [2, 1, 2, 3, 1, 2, 3, 4],
+      leftHand: [2, 1, 3, 2, 1, 4, 3, 2],
+    },
+  }
+
+  it.each(
+    Object.keys(
+      EXPECTED_MAJOR_FINGERING,
+    ) as (keyof typeof EXPECTED_MAJOR_FINGERING)[],
+  )('%s major has the exact published right/left hand fingering', (root) => {
+    const scale = getScale(root, 'major')
+    expect(scale?.rightHandFingering).toEqual(
+      EXPECTED_MAJOR_FINGERING[root].rightHand,
+    )
+    expect(scale?.leftHandFingering).toEqual(
+      EXPECTED_MAJOR_FINGERING[root].leftHand,
+    )
+  })
+
+  it.each(
+    Object.keys(
+      EXPECTED_NATURAL_MINOR_FINGERING,
+    ) as (keyof typeof EXPECTED_NATURAL_MINOR_FINGERING)[],
+  )(
+    '%s natural minor has the exact published right/left hand fingering',
+    (root) => {
+      const scale = getScale(root, 'natural-minor')
+      expect(scale?.rightHandFingering).toEqual(
+        EXPECTED_NATURAL_MINOR_FINGERING[root].rightHand,
+      )
+      expect(scale?.leftHandFingering).toEqual(
+        EXPECTED_NATURAL_MINOR_FINGERING[root].leftHand,
+      )
+    },
+  )
 })
