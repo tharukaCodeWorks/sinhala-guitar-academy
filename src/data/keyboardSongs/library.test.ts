@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { getChordById } from '../keyboardChords'
 import {
   findSongsByArtist,
+  findSongsByChordId,
   findSongsByLessonRole,
   getSongById,
   getSongChords,
@@ -183,5 +184,22 @@ describe('accessors', () => {
     for (const song of songLibrary) {
       expect(artists).toContain(song.artist)
     }
+  })
+
+  it('findSongsByChordId returns every song that references the chord', () => {
+    const results = findSongsByChordId('c-major')
+    expect(results.length).toBeGreaterThan(0)
+    for (const song of results) {
+      expect(listSongChordIds(song)).toContain('c-major')
+    }
+    for (const song of songLibrary) {
+      if (!results.includes(song)) {
+        expect(listSongChordIds(song)).not.toContain('c-major')
+      }
+    }
+  })
+
+  it('findSongsByChordId returns an empty array for a chord no song uses', () => {
+    expect(findSongsByChordId('not-a-real-chord-id')).toEqual([])
   })
 })
