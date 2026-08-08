@@ -17,7 +17,7 @@ import LessonDetailPage from './pages/LessonDetailPage'
 import KeyboardChordLibraryPage from './pages/KeyboardChordLibraryPage'
 import KeyboardChordFamiliesPage from './pages/KeyboardChordFamiliesPage'
 import KeyboardScaleExplorerPage from './pages/KeyboardScaleExplorerPage'
-import KeyboardTechniqueDrillsPage from './pages/KeyboardTechniqueDrillsPage'
+import KeyboardTechniquePage from './pages/KeyboardTechniquePage'
 import KeyboardSongsPage from './pages/KeyboardSongsPage'
 import KeyboardSongDetailPage from './pages/KeyboardSongDetailPage'
 import NotFoundPage from './pages/NotFoundPage'
@@ -49,10 +49,7 @@ function App() {
           element={<KeyboardChordFamiliesPage />}
         />
         <Route path="keyboard/scales" element={<KeyboardScaleExplorerPage />} />
-        <Route
-          path="keyboard/technique"
-          element={<KeyboardTechniqueDrillsPage />}
-        />
+        <Route path="keyboard/technique" element={<KeyboardTechniquePage />} />
         <Route path="keyboard/songs" element={<KeyboardSongsPage />} />
         <Route
           path="keyboard/songs/:songId"
