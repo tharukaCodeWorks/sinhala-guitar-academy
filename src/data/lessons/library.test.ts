@@ -14,6 +14,10 @@ describe('lessonLibrary coverage', () => {
     expect(listLessonsByTier('beginner').length).toBe(6)
   })
 
+  it('has exactly 5 intermediate lessons authored so far', () => {
+    expect(listLessonsByTier('intermediate').length).toBe(5)
+  })
+
   it('every lesson id is unique', () => {
     const ids = lessonLibrary.map((lesson) => lesson.id)
     expect(new Set(ids).size).toBe(ids.length)
@@ -67,6 +71,18 @@ describe('order sequencing per tier', () => {
       'putting-it-together',
     ])
   })
+
+  it('the intermediate tier is ordered scale technique -> chord inversions -> expanding rhythm -> reading beyond the staff/dynamics -> lead sheets', () => {
+    expect(
+      listLessonsByTier('intermediate').map((lesson) => lesson.id),
+    ).toEqual([
+      'scale-technique-thumb-under-fingering',
+      'chord-inversions',
+      'expanding-rhythm',
+      'reading-beyond-staff-dynamics',
+      'lead-sheets-chord-symbols',
+    ])
+  })
 })
 
 describe('referential integrity against the keyboard chord library', () => {
@@ -84,8 +100,15 @@ describe('referential integrity against the keyboard chord library', () => {
   })
 
   it('at least one beginner lesson embeds a keyboardChordId reference', () => {
-    const referencingLessons = lessonLibrary.filter((lesson) =>
+    const referencingLessons = listLessonsByTier('beginner').filter((lesson) =>
       lesson.sections.some((section) => section.keyboardChordId),
+    )
+    expect(referencingLessons.length).toBeGreaterThan(0)
+  })
+
+  it('at least one intermediate lesson embeds a keyboardChordId reference', () => {
+    const referencingLessons = listLessonsByTier('intermediate').filter(
+      (lesson) => lesson.sections.some((section) => section.keyboardChordId),
     )
     expect(referencingLessons.length).toBeGreaterThan(0)
   })
@@ -107,6 +130,13 @@ describe('referential integrity against the keyboard song catalog', () => {
     expect(lesson?.songId).toBe('surangani')
     const song = getSongById(lesson!.songId!)
     expect(song?.lessonRoles).toContain('putting-it-together')
+  })
+
+  it('the "Playing From Lead Sheets & Chord Symbols" lesson references the song tagged for that lesson role', () => {
+    const lesson = getLessonById('lead-sheets-chord-symbols')
+    expect(lesson?.songId).toBe('manike-mage-hithe')
+    const song = getSongById(lesson!.songId!)
+    expect(song?.lessonRoles).toContain('lead-sheet-chords')
   })
 })
 
@@ -131,7 +161,6 @@ describe('accessors', () => {
   })
 
   it('listLessonsByTier returns an empty array for a tier with no authored lessons', () => {
-    expect(listLessonsByTier('intermediate')).toEqual([])
     expect(listLessonsByTier('advanced')).toEqual([])
   })
 
@@ -149,6 +178,29 @@ describe('accessors', () => {
       expect(previousLessonInTier(ids[i])?.id).toBe(ids[i - 1])
     }
     expect(previousLessonInTier(ids[0])).toBeUndefined()
+  })
+
+  it('nextLessonInTier walks forward through the full intermediate sequence', () => {
+    const ids = listLessonsByTier('intermediate').map((lesson) => lesson.id)
+    for (let i = 0; i < ids.length - 1; i++) {
+      expect(nextLessonInTier(ids[i])?.id).toBe(ids[i + 1])
+    }
+    expect(nextLessonInTier(ids[ids.length - 1])).toBeUndefined()
+  })
+
+  it('previousLessonInTier walks backward through the full intermediate sequence', () => {
+    const ids = listLessonsByTier('intermediate').map((lesson) => lesson.id)
+    for (let i = 1; i < ids.length; i++) {
+      expect(previousLessonInTier(ids[i])?.id).toBe(ids[i - 1])
+    }
+    expect(previousLessonInTier(ids[0])).toBeUndefined()
+  })
+
+  it('the beginner and intermediate tiers do not bleed into each other via next/previous', () => {
+    expect(nextLessonInTier('putting-it-together')).toBeUndefined()
+    expect(
+      previousLessonInTier('scale-technique-thumb-under-fingering'),
+    ).toBeUndefined()
   })
 
   it('nextLessonInTier and previousLessonInTier return undefined for an unknown id', () => {
