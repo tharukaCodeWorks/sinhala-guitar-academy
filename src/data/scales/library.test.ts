@@ -176,23 +176,23 @@ describe('scaleLibrary — black-tonic scale fingering, exact match', () => {
   > = {
     'C#': {
       rightHand: [2, 3, 1, 2, 3, 4, 1, 2],
-      leftHand: [3, 2, 1, 4, 3, 2, 1, 3],
+      leftHand: [3, 2, 1, 4, 3, 2, 1, 2],
     },
     'D#': {
-      rightHand: [3, 1, 2, 3, 4, 1, 2, 3],
-      leftHand: [3, 2, 1, 4, 3, 2, 1, 3],
+      rightHand: [2, 1, 2, 3, 4, 1, 2, 3],
+      leftHand: [3, 2, 1, 4, 3, 2, 1, 2],
     },
     'F#': {
       rightHand: [2, 3, 4, 1, 2, 3, 1, 2],
-      leftHand: [4, 3, 2, 1, 3, 2, 1, 4],
+      leftHand: [4, 3, 2, 1, 3, 2, 1, 2],
     },
     'G#': {
-      rightHand: [3, 4, 1, 2, 3, 1, 2, 3],
-      leftHand: [3, 2, 1, 4, 3, 2, 1, 3],
+      rightHand: [2, 3, 1, 2, 3, 1, 2, 3],
+      leftHand: [3, 2, 1, 4, 3, 2, 1, 2],
     },
     'A#': {
       rightHand: [2, 1, 2, 3, 1, 2, 3, 4],
-      leftHand: [3, 2, 1, 4, 3, 2, 1, 3],
+      leftHand: [3, 2, 1, 4, 3, 2, 1, 2],
     },
   }
 
@@ -201,20 +201,20 @@ describe('scaleLibrary — black-tonic scale fingering, exact match', () => {
     { rightHand: number[]; leftHand: number[] }
   > = {
     'C#': {
-      rightHand: [3, 4, 1, 2, 3, 1, 2, 3],
-      leftHand: [3, 2, 1, 4, 3, 2, 1, 3],
+      rightHand: [2, 3, 1, 2, 3, 1, 2, 3],
+      leftHand: [3, 2, 1, 4, 3, 2, 1, 2],
     },
     'D#': {
-      rightHand: [3, 1, 2, 3, 4, 1, 2, 3],
+      rightHand: [2, 1, 2, 3, 4, 1, 2, 3],
       leftHand: [2, 1, 4, 3, 2, 1, 3, 2],
     },
     'F#': {
       rightHand: [2, 3, 1, 2, 3, 1, 2, 3],
-      leftHand: [4, 3, 2, 1, 3, 2, 1, 4],
+      leftHand: [4, 3, 2, 1, 3, 2, 1, 2],
     },
     'G#': {
-      rightHand: [3, 4, 1, 2, 3, 1, 2, 3],
-      leftHand: [3, 2, 1, 3, 2, 1, 4, 3],
+      rightHand: [2, 3, 1, 2, 3, 1, 2, 3],
+      leftHand: [3, 2, 1, 4, 3, 1, 2, 3],
     },
     'A#': {
       rightHand: [2, 1, 2, 3, 1, 2, 3, 4],

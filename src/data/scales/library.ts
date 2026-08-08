@@ -14,18 +14,25 @@ import type { FingerNumber, NoteName, Scale, ScaleType } from './types'
  * Fingering, by contrast, is **not** derivable from the notes alone — it's
  * a pedagogical convention (which finger crosses under the thumb, and
  * where), not a mathematical property of the scale. `MAJOR_FINGERING` and
- * `NATURAL_MINOR_FINGERING` below are hand-seeded from published
- * piano-technique fingering charts (cross-checked against pianoscales.org
- * and littleredpiano.com specifically, not just a single generic
- * theory-textbook source — a first pass here sourced from a music-theory
- * PDF turned out to disagree with the piano-technique-focused references on
- * several black-tonic keys' octave-closing/opening fingers, so the
- * technique-focused sources won out as the more reliable reference for
- * *playing* fingering specifically). See the module-level rule of thumb
- * that these charts follow: the thumb (finger 1) never lands on a black
- * key, for either hand — every entry below is checked against that rule
- * (see `library.test.ts`'s left-hand and right-hand thumb-placement
- * checks), but the rule alone under-determines the fingering, so it's a
+ * `NATURAL_MINOR_FINGERING` below are hand-seeded from
+ * learnmusictheory.net's "Major and Natural Minor Scales for Piano"
+ * fingering chart (`01-02-07-ScalesforPiano.pdf`), read directly off the
+ * rendered PDF page images (this chart's PDF text layer is not in reading
+ * order, so it must be read visually, not via text extraction), and
+ * cross-checked against Wikibooks' "Traditional Piano Scale Fingering"
+ * table. NOTE: an earlier revision of this file briefly "corrected" 12 of
+ * these values against pianoscales.org, which turned out to be a dead/
+ * parked domain — an AI web-fetch tool had fabricated confident-looking
+ * finger numbers against it rather than returning real content. Those 12
+ * values have been reverted back to (or, for G#/Ab natural minor's left
+ * hand, re-derived to fix a genuine pre-existing bug against) the values
+ * actually printed in the learnmusictheory.net chart; see `library.test.ts`
+ * for the exact black-tonic regression values and the PR history for the
+ * full sourcing saga. See the module-level rule of thumb that this chart
+ * follows: the thumb (finger 1) never lands on a black key, for either
+ * hand — every entry below is checked against that rule (see
+ * `library.test.ts`'s left-hand and right-hand thumb-placement checks),
+ * but the rule alone under-determines the fingering, so it's a
  * cross-check, not the source.
  *
  * This is the canonical, ordered list other data/features should treat as
@@ -86,15 +93,15 @@ const MAJOR_FINGERING: Record<NoteName, KeyFingering> = {
   },
   'C#': {
     rightHand: [2, 3, 1, 2, 3, 4, 1, 2],
-    leftHand: [3, 2, 1, 4, 3, 2, 1, 3],
+    leftHand: [3, 2, 1, 4, 3, 2, 1, 2],
   },
   D: {
     rightHand: [1, 2, 3, 1, 2, 3, 4, 5],
     leftHand: [5, 4, 3, 2, 1, 3, 2, 1],
   },
   'D#': {
-    rightHand: [3, 1, 2, 3, 4, 1, 2, 3],
-    leftHand: [3, 2, 1, 4, 3, 2, 1, 3],
+    rightHand: [2, 1, 2, 3, 4, 1, 2, 3],
+    leftHand: [3, 2, 1, 4, 3, 2, 1, 2],
   },
   E: {
     rightHand: [1, 2, 3, 1, 2, 3, 4, 5],
@@ -106,15 +113,15 @@ const MAJOR_FINGERING: Record<NoteName, KeyFingering> = {
   },
   'F#': {
     rightHand: [2, 3, 4, 1, 2, 3, 1, 2],
-    leftHand: [4, 3, 2, 1, 3, 2, 1, 4],
+    leftHand: [4, 3, 2, 1, 3, 2, 1, 2],
   },
   G: {
     rightHand: [1, 2, 3, 1, 2, 3, 4, 5],
     leftHand: [5, 4, 3, 2, 1, 3, 2, 1],
   },
   'G#': {
-    rightHand: [3, 4, 1, 2, 3, 1, 2, 3],
-    leftHand: [3, 2, 1, 4, 3, 2, 1, 3],
+    rightHand: [2, 3, 1, 2, 3, 1, 2, 3],
+    leftHand: [3, 2, 1, 4, 3, 2, 1, 2],
   },
   A: {
     rightHand: [1, 2, 3, 1, 2, 3, 4, 5],
@@ -122,7 +129,7 @@ const MAJOR_FINGERING: Record<NoteName, KeyFingering> = {
   },
   'A#': {
     rightHand: [2, 1, 2, 3, 1, 2, 3, 4],
-    leftHand: [3, 2, 1, 4, 3, 2, 1, 3],
+    leftHand: [3, 2, 1, 4, 3, 2, 1, 2],
   },
   B: {
     rightHand: [1, 2, 3, 1, 2, 3, 4, 5],
@@ -140,12 +147,17 @@ const MAJOR_FINGERING: Record<NoteName, KeyFingering> = {
  * keys.
  *
  * The five black-tonic keys (C#, D#, F#, G#, A#) were independently
- * re-verified note-by-note against pianoscales.org, since a prior pass here
- * shared the same transcription bug as `MAJOR_FINGERING` originally had:
- * G#'s left hand in particular had its thumb landing on F# (a black key) —
- * a genuine, provable error, not just a source disagreement, since it
- * broke the "thumb never on a black key" rule that every other entry in
- * this table (and `MAJOR_FINGERING`) satisfies for both hands.
+ * re-verified note-by-note directly against the rendered
+ * learnmusictheory.net PDF page (see the module doc comment above) and
+ * cross-checked against Wikibooks' fingering table. G#/Ab's left hand is
+ * the one exception seeded from that reading rather than copied verbatim:
+ * the value originally seeded here had its thumb landing on F# (a black
+ * key) — a genuine, provable error (not just a source disagreement), since
+ * it broke the "thumb never on a black key" rule that every other entry in
+ * this table (and `MAJOR_FINGERING`) satisfies for both hands. Its
+ * replacement, [3, 2, 1, 4, 3, 1, 2, 3], is the value actually printed in
+ * the learnmusictheory.net chart for G#/Ab natural minor's left hand, and
+ * satisfies the thumb rule (thumb lands on B and E, both white keys).
  */
 const NATURAL_MINOR_FINGERING: Record<NoteName, KeyFingering> = {
   C: {
@@ -153,15 +165,15 @@ const NATURAL_MINOR_FINGERING: Record<NoteName, KeyFingering> = {
     leftHand: [5, 4, 3, 2, 1, 3, 2, 1],
   },
   'C#': {
-    rightHand: [3, 4, 1, 2, 3, 1, 2, 3],
-    leftHand: [3, 2, 1, 4, 3, 2, 1, 3],
+    rightHand: [2, 3, 1, 2, 3, 1, 2, 3],
+    leftHand: [3, 2, 1, 4, 3, 2, 1, 2],
   },
   D: {
     rightHand: [1, 2, 3, 1, 2, 3, 4, 5],
     leftHand: [5, 4, 3, 2, 1, 3, 2, 1],
   },
   'D#': {
-    rightHand: [3, 1, 2, 3, 4, 1, 2, 3],
+    rightHand: [2, 1, 2, 3, 4, 1, 2, 3],
     leftHand: [2, 1, 4, 3, 2, 1, 3, 2],
   },
   E: {
@@ -174,15 +186,15 @@ const NATURAL_MINOR_FINGERING: Record<NoteName, KeyFingering> = {
   },
   'F#': {
     rightHand: [2, 3, 1, 2, 3, 1, 2, 3],
-    leftHand: [4, 3, 2, 1, 3, 2, 1, 4],
+    leftHand: [4, 3, 2, 1, 3, 2, 1, 2],
   },
   G: {
     rightHand: [1, 2, 3, 1, 2, 3, 4, 5],
     leftHand: [5, 4, 3, 2, 1, 3, 2, 1],
   },
   'G#': {
-    rightHand: [3, 4, 1, 2, 3, 1, 2, 3],
-    leftHand: [3, 2, 1, 3, 2, 1, 4, 3],
+    rightHand: [2, 3, 1, 2, 3, 1, 2, 3],
+    leftHand: [3, 2, 1, 4, 3, 1, 2, 3],
   },
   A: {
     rightHand: [1, 2, 3, 1, 2, 3, 4, 5],
