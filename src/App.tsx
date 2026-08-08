@@ -12,7 +12,8 @@ import SongDetailPage from './pages/SongDetailPage'
 import TabDisplayDemoPage from './pages/TabDisplayDemoPage'
 import StrummingPlayerDemoPage from './pages/StrummingPlayerDemoPage'
 import KeyboardHomePage from './pages/KeyboardHomePage'
-import KeyboardLessonsPage from './pages/KeyboardLessonsPage'
+import LessonsOverviewPage from './pages/LessonsOverviewPage'
+import LessonDetailPage from './pages/LessonDetailPage'
 import KeyboardChordLibraryPage from './pages/KeyboardChordLibraryPage'
 import KeyboardChordFamiliesPage from './pages/KeyboardChordFamiliesPage'
 import KeyboardScaleExplorerPage from './pages/KeyboardScaleExplorerPage'
@@ -36,7 +37,11 @@ function App() {
         <Route path="demo/tabs" element={<TabDisplayDemoPage />} />
         <Route path="demo/strumming" element={<StrummingPlayerDemoPage />} />
         <Route path="keyboard" element={<KeyboardHomePage />} />
-        <Route path="keyboard/lessons" element={<KeyboardLessonsPage />} />
+        <Route path="keyboard/lessons" element={<LessonsOverviewPage />} />
+        <Route
+          path="keyboard/lessons/:lessonId"
+          element={<LessonDetailPage />}
+        />
         <Route path="keyboard/chords" element={<KeyboardChordLibraryPage />} />
         <Route
           path="keyboard/chord-families"
