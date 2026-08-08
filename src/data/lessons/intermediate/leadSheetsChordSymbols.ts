@@ -39,7 +39,6 @@ export const leadSheetsChordSymbols: Lesson = {
     {
       heading: 'Realizing a Left-Hand Accompaniment',
       body: "With only chord symbols to go on, the simplest accompaniment is a block chord per change: play the full triad for each chord symbol, held for as long as that symbol is in effect, left hand an octave below the melody — Am, then F, then G, then Em for the verse, in root position to start. Once that is secure, apply the previous lesson's inversion technique exactly where the song's own notes call for it: F and C sound smoother in 1st inversion here (F/A and C/E) because they keep the bass note close to the chord that came before, rather than jumping to each new root.",
-      keyboardChordId: 'f-major',
     },
     {
       heading: 'From Block Chords to a Broken-Chord Pattern',

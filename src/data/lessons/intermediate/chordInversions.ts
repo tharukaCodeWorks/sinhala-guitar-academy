@@ -28,7 +28,6 @@ export const chordInversions: Lesson = {
     {
       heading: 'A Real Example: F and C in 1st Inversion',
       body: '"Manike Mage Hithe" is arranged here in A minor with the chorus progression Am-F-C-G. Played entirely in root position, the hand would jump considerably between Am and F, and again between F and C. The arrangement\'s own performance note instead calls for **F and C to be played in 1st inversion** (written F/A and C/E, meaning "F chord with A in the bass" and "C chord with E in the bass") — because A is already a note of the Am chord you just played, and E is a note both the F and C chords share, keeping the bass note close or identical between changes instead of leaping.',
-      keyboardChordId: 'f-major',
     },
     {
       heading: 'Building 1st and 2nd Inversion by Ear',

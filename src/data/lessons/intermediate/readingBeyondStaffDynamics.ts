@@ -25,7 +25,7 @@ export const readingBeyondStaffDynamics: Lesson = {
     },
     {
       heading: 'Counting Ledger Lines Below the Bass Staff',
-      body: "Below the bass staff works the same way, anchored from the staff's bottom line (G): the first ledger line below is E, the space below that is D, the second ledger line is C — landing back on the very same Middle C you already know, confirming the two staves' ledger lines meet in the middle exactly where you would expect. Low bass-clef ledger-line notes like this are common in left-hand accompaniment patterns that reach below a five-finger position's usual range.",
+      body: "Below the bass staff works the same way, anchored from the staff's bottom line (G): the space just below is F, the first ledger line below is E, the space below that is D, and the second ledger line below is C — but don't mistake that C for Middle C. It is a full two octaves lower, a low C well down in the piano's bass range (C2). Middle C, as you already know from the beginner tier, sits on its own short ledger line just above the bass staff, not below it. Low bass-clef ledger-line notes like this second-ledger-line C are common in left-hand accompaniment patterns that reach well below a five-finger position's usual range.",
     },
     {
       heading: 'Dynamics: p, mf, and f',
