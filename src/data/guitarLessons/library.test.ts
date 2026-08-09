@@ -14,6 +14,10 @@ describe('guitarLessonLibrary coverage', () => {
     expect(listLessonsByTier('beginner').length).toBe(6)
   })
 
+  it('has exactly 6 intermediate lessons authored so far', () => {
+    expect(listLessonsByTier('intermediate').length).toBe(6)
+  })
+
   it('every lesson id is unique', () => {
     const ids = guitarLessonLibrary.map((lesson) => lesson.id)
     expect(new Set(ids).size).toBe(ids.length)
@@ -67,6 +71,19 @@ describe('order sequencing per tier', () => {
       'putting-it-together',
     ])
   })
+
+  it('the intermediate tier is ordered 7th chords -> strumming/rhythm -> fingerpicking -> barre chords -> capo -> putting it together', () => {
+    expect(
+      listLessonsByTier('intermediate').map((lesson) => lesson.id),
+    ).toEqual([
+      'adding-7th-chords',
+      'strumming-patterns-rhythmic-variety',
+      'fingerpicking-fundamentals',
+      'introduction-to-barre-chords',
+      'capo-use-transposing',
+      'putting-it-together-intermediate',
+    ])
+  })
 })
 
 describe('referential integrity against the guitar chord library', () => {
@@ -104,6 +121,30 @@ describe('referential integrity against the guitar chord library', () => {
       lesson.sections.some((section) => section.chordId),
     )
     expect(referencingLessons.length).toBeGreaterThan(0)
+  })
+
+  it('the "Adding 7th Chords" lesson (E7, A7, D7, G7, C7) sections reference the expected chords', () => {
+    const lesson = getLessonById('adding-7th-chords')
+    const chordIds = lesson?.sections
+      .map((section) => section.chordId)
+      .filter((id): id is string => Boolean(id))
+    expect(chordIds).toEqual(['e-7th', 'a-7th', 'd-7th', 'g-7th', 'c-7th'])
+  })
+
+  it('the "Introduction to Barre Chords" lesson references the F major barre chord', () => {
+    const lesson = getLessonById('introduction-to-barre-chords')
+    const chord = getChordById('f-major')
+    expect(chord).toBeDefined()
+    expect(
+      lesson?.sections.some((section) => section.chordId === 'f-major'),
+    ).toBe(true)
+  })
+
+  it('the F major barre chord actually requires a barre (an intermediate/advanced difficulty voicing)', () => {
+    const chord = getChordById('f-major')
+    expect(
+      chord?.variants.every((variant) => variant.difficulty !== 'beginner'),
+    ).toBe(true)
   })
 })
 
@@ -145,6 +186,53 @@ describe('referential integrity against the guitar song catalog', () => {
       ).toBe(true)
     }
   })
+
+  it('the intermediate "Putting It Together" lesson references a real intermediate-difficulty song', () => {
+    const lesson = getLessonById('putting-it-together-intermediate')
+    expect(lesson?.songId).toBe('nura-wasanthe')
+    const song = getSongById(lesson!.songId!)
+    expect(song).toBeDefined()
+    expect(song?.difficulty).toBe('intermediate')
+  })
+
+  it('the intermediate "Putting It Together" song uses both a barre chord and a 7th chord taught by this tier', () => {
+    const lesson = getLessonById('putting-it-together-intermediate')
+    const song = getSongById(lesson!.songId!)
+    const songChordIds = new Set(
+      song!.chordProgression.flatMap((section) => section.chordIds),
+    )
+    expect(songChordIds.has('f-major')).toBe(true)
+    expect(songChordIds.has('c-7th')).toBe(true)
+  })
+
+  it('every chord the intermediate "Putting It Together" song uses is either taught earlier in the course or explicitly taught inline in this lesson', () => {
+    const lesson = getLessonById('putting-it-together-intermediate')
+    const song = getSongById(lesson!.songId!)
+    const taughtElsewhere = new Set(
+      guitarLessonLibrary
+        .filter(
+          (l) =>
+            l.tier === 'beginner' ||
+            (l.tier === 'intermediate' && l.id !== lesson!.id),
+        )
+        .flatMap((l) => l.sections.map((section) => section.chordId))
+        .filter((id): id is string => Boolean(id)),
+    )
+    const taughtInline = new Set(
+      lesson!.sections
+        .map((section) => section.chordId)
+        .filter((id): id is string => Boolean(id)),
+    )
+    const songChordIds = new Set(
+      song!.chordProgression.flatMap((section) => section.chordIds),
+    )
+    for (const chordId of songChordIds) {
+      expect(
+        taughtElsewhere.has(chordId) || taughtInline.has(chordId),
+        `song "${song!.id}" uses chord "${chordId}" which is neither taught earlier in the course nor introduced inline in "${lesson!.id}"`,
+      ).toBe(true)
+    }
+  })
 })
 
 describe('accessors', () => {
@@ -167,8 +255,16 @@ describe('accessors', () => {
     expect(orders).toEqual([...orders].sort((a, b) => a - b))
   })
 
+  it('listLessonsByTier only returns intermediate lessons, sorted by order', () => {
+    const lessons = listLessonsByTier('intermediate')
+    for (const lesson of lessons) {
+      expect(lesson.tier).toBe('intermediate')
+    }
+    const orders = lessons.map((lesson) => lesson.order)
+    expect(orders).toEqual([...orders].sort((a, b) => a - b))
+  })
+
   it('listLessonsByTier returns an empty array for a tier with no authored lessons', () => {
-    expect(listLessonsByTier('intermediate')).toEqual([])
     expect(listLessonsByTier('advanced')).toEqual([])
   })
 
@@ -186,6 +282,30 @@ describe('accessors', () => {
       expect(previousLessonInTier(ids[i])?.id).toBe(ids[i - 1])
     }
     expect(previousLessonInTier(ids[0])).toBeUndefined()
+  })
+
+  it('nextLessonInTier walks forward through the full intermediate sequence', () => {
+    const ids = listLessonsByTier('intermediate').map((lesson) => lesson.id)
+    for (let i = 0; i < ids.length - 1; i++) {
+      expect(nextLessonInTier(ids[i])?.id).toBe(ids[i + 1])
+    }
+    expect(nextLessonInTier(ids[ids.length - 1])).toBeUndefined()
+  })
+
+  it('previousLessonInTier walks backward through the full intermediate sequence', () => {
+    const ids = listLessonsByTier('intermediate').map((lesson) => lesson.id)
+    for (let i = 1; i < ids.length; i++) {
+      expect(previousLessonInTier(ids[i])?.id).toBe(ids[i - 1])
+    }
+    expect(previousLessonInTier(ids[0])).toBeUndefined()
+  })
+
+  it('nextLessonInTier does not cross the tier boundary from the last beginner lesson', () => {
+    expect(nextLessonInTier('putting-it-together')).toBeUndefined()
+  })
+
+  it('previousLessonInTier does not cross the tier boundary from the first intermediate lesson', () => {
+    expect(previousLessonInTier('adding-7th-chords')).toBeUndefined()
   })
 
   it('nextLessonInTier and previousLessonInTier return undefined for an unknown id', () => {
