@@ -21,12 +21,12 @@ export const campfireChords: Lesson = {
     },
     {
       heading: 'G Major',
-      body: 'Place your 2nd finger on the 6th string (low E), 3rd fret, your 1st finger on the 5th string, 2nd fret, and your 3rd finger on the 1st string (high e), 3rd fret. The 4th, 3rd, and 2nd strings all ring open. All six strings are played. A common alternate fingering swaps the 2nd and 3rd fingers to the 5th and 6th strings respectively, which some players find makes the change into C easier — try both and see which feels more natural.',
+      body: 'Place your 3rd finger on the 6th string (low E), 3rd fret, your 2nd finger on the 5th string (A), 2nd fret, and your 4th finger (pinky) on the 1st string (high e), 3rd fret. The 4th, 3rd, and 2nd strings all ring open. All six strings are played. A common alternate fingering uses your 2nd finger on the low E string and your 1st finger on the A string instead, freeing the 3rd finger (rather than the pinky) for the high e string — some players find this easier, especially when changing into C, so try both and see which feels more natural.',
       chordId: 'g-major',
     },
     {
       heading: 'C Major',
-      body: 'Place your 3rd finger on the 5th string, 3rd fret, your 2nd finger on the 4th string, 2nd fret, and your 1st finger on the 2nd string, 1st fret. Do not play the low E string; the open D, G, and high e strings all ring along with your fretted notes. Start your strum from the open A string. C is often considered one of the trickier open chords for beginners because of the stretch between the 1st and 3rd fingers — go slowly.',
+      body: 'Place your 3rd finger on the 5th string (A), 3rd fret, your 2nd finger on the 4th string (D), 2nd fret, and your 1st finger on the 2nd string (B), 1st fret. Do not play the low E string; only the G and high e strings ring open here — the D string is fretted by your 2nd finger, not open, even though it is easy to mistake for one of the open strings. Start your strum from the open A string. C is often considered one of the trickier open chords for beginners because of the stretch between the 1st and 3rd fingers — go slowly.',
       chordId: 'c-major',
     },
     {
