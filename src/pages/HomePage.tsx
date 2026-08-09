@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { navGroups } from '../data/navigation'
 
 const sectionDescriptions: Record<string, string> = {
+  '/lessons': 'Follow a structured, sequential guitar method course.',
   '/chords': 'Look up chord diagrams and fingerings.',
   '/chord-families': 'Discover chords that sound great together.',
   '/capo-tool': 'Find the right capo position for any song.',

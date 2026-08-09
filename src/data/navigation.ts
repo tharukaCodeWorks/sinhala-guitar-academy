@@ -22,6 +22,7 @@ export const navGroups: NavGroup[] = [
   {
     label: 'Guitar',
     items: [
+      { label: 'Lessons', path: '/lessons' },
       { label: 'Chord Library', path: '/chords' },
       { label: 'Chord Families', path: '/chord-families' },
       { label: 'Capo Tool', path: '/capo-tool' },

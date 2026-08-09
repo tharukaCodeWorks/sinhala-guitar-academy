@@ -9,6 +9,8 @@ import StrummingPracticePage from './pages/StrummingPracticePage'
 import StrumBuilderPage from './pages/StrumBuilderPage'
 import SongsPage from './pages/SongsPage'
 import SongDetailPage from './pages/SongDetailPage'
+import GuitarLessonsOverviewPage from './pages/GuitarLessonsOverviewPage'
+import GuitarLessonDetailPage from './pages/GuitarLessonDetailPage'
 import TabDisplayDemoPage from './pages/TabDisplayDemoPage'
 import StrummingPlayerDemoPage from './pages/StrummingPlayerDemoPage'
 import KeyboardHomePage from './pages/KeyboardHomePage'
@@ -35,6 +37,8 @@ function App() {
         <Route path="strum-builder" element={<StrumBuilderPage />} />
         <Route path="songs" element={<SongsPage />} />
         <Route path="songs/:songId" element={<SongDetailPage />} />
+        <Route path="lessons" element={<GuitarLessonsOverviewPage />} />
+        <Route path="lessons/:lessonId" element={<GuitarLessonDetailPage />} />
         <Route path="demo/tabs" element={<TabDisplayDemoPage />} />
         <Route path="demo/strumming" element={<StrummingPlayerDemoPage />} />
         <Route path="keyboard" element={<KeyboardHomePage />} />
